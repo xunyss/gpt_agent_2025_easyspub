@@ -27,7 +27,7 @@ def get_current_time(timezone: str, location: str) -> str:
 tools = [get_current_time]
 tool_dict = {"get_current_time": get_current_time}
 
-llm_with_tools = llm.  bind_tools(tools)
+llm_with_tools = llm.bind_tools(tools)
 
 
 # 사용자의 메시지 처리하기 위한 함수
