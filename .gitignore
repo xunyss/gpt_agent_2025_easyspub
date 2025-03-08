@@ -183,3 +183,5 @@ chap14/sec04/data/*
 chap14/sec05/data/*
 
 chap15/*/data/*
+chap16/sec01/chroma_store/*
+chap16/data/*
