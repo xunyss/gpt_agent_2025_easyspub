@@ -45,11 +45,11 @@ def summarize_txt(file_path: str): # ①
     return response.choices[0].message.content
 
 if __name__ == '__main__':
-    file_path = './chap04/data/hate_and_anger.txt'
+    file_path = './chap04/data/과정기반 작물모형을 이용한 웹 기반 밀 재배관리 의사결정 지원시스템 설계 및 구축_with_preprocessing.txt'
 
     summary = summarize_txt(file_path)
     print(summary)
 
     # ⑤ 요약된 내용을 파일로 저장한다.
-    with open('./chap04/output/hate_and_anger.txt', 'w', encoding='utf-8') as f:
+    with open('./chap04/output/crop_model_summary.txt', 'w', encoding='utf-8') as f:
         f.write(summary)
