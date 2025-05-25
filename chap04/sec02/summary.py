@@ -45,7 +45,7 @@ def summarize_txt(file_path: str): # ①
     return response.choices[0].message.content
 
 if __name__ == '__main__':
-    file_path = './chap04/data/과정기반 작물모형을 이용한 웹 기반 밀 재배관리 의사결정 지원시스템 설계 및 구축_with_preprocessing.txt'
+    file_path = './chap04/output/과정기반 작물모형을 이용한 웹 기반 밀 재배관리 의사결정 지원시스템 설계 및 구축_with_preprocessing.txt'
 
     summary = summarize_txt(file_path)
     print(summary)
