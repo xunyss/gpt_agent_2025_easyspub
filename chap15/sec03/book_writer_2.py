@@ -334,7 +334,7 @@ def content_strategist(state: State):
     )
 
     # 시스템 프롬프트와 모델을 연결
-    contnet_strategist_chain = content_strategist_system_prompt | llm | StrOutputParser()
+    content_strategist_chain = content_strategist_system_prompt | llm | StrOutputParser()
 
     user_request = state.get("user_request", "") # 사용자 요구사항 가져오기
 
@@ -356,7 +356,7 @@ def content_strategist(state: State):
 
     # 목차 작성
     gathered = ''
-    for chunk in contnet_strategist_chain.stream(inputs):
+    for chunk in content_strategist_chain.stream(inputs):
         gathered += chunk
         print(chunk, end='')
 

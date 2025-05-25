@@ -44,7 +44,7 @@ def content_strategist(state: State):
     )
 
     # 시스템 프롬프트와 모델을 연결
-    contnet_strategist_chain = content_strategist_system_prompt | llm | StrOutputParser()
+    content_strategist_chain = content_strategist_system_prompt | llm | StrOutputParser()
 
     messages = state["messages"]        # 상태에서 메시지를 가져옴
     outline = get_outline(current_path) # 저장된 목차를 가져옴
@@ -57,7 +57,7 @@ def content_strategist(state: State):
 
     # 목차 작성
     gathered = ''
-    for chunk in contnet_strategist_chain.stream(inputs):
+    for chunk in content_strategist_chain.stream(inputs):
         gathered += chunk
         print(chunk, end='')
 
