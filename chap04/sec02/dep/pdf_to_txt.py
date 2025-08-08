@@ -1,5 +1,6 @@
-import pymupdf
 import os
+
+import pymupdf
 
 # ① PDF 문서를 PyMuPDF로 열기
 pdf_file_path = "chap04/data/인격에 대한 칸트의 관점과 인공지능.pdf"

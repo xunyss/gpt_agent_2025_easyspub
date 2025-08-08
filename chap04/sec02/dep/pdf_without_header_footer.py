@@ -1,5 +1,6 @@
-import pymupdf
 import os
+
+import pymupdf
 
 pdf_file_path = "chap04/data/인격에 대한 칸트의 관점과 인공지능.pdf"
 doc = pymupdf.open(pdf_file_path)

@@ -1,6 +1,7 @@
-from openai import OpenAI  # 오픈AI 라이브러리를 가져오기
-from dotenv import load_dotenv
 import os
+
+from dotenv import load_dotenv
+from openai import OpenAI  # 오픈AI 라이브러리를 가져오기
 
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")  # 환경 변수에서 API 키 가져오기
@@ -10,7 +11,7 @@ client = OpenAI(api_key=api_key)  # 오픈AI 클라이언트의 인스턴스 생
 # ①
 def get_ai_response(messages):
     response = client.chat.completions.create(
-        model="gpt-4o",  # 응답 생성에 사용할 모델 지정
+        model=os.getenv("DEFAULT_MODEL"),  # 응답 생성에 사용할 모델 지정
         temperature=0.9,  # 응답 생성에 사용할 temperature 설정
         messages=messages,  # 대화 기록을 입력으로 전달
     )

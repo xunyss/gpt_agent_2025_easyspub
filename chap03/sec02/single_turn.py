@@ -1,6 +1,7 @@
-from openai import OpenAI
-from dotenv import load_dotenv
 import os
+
+from dotenv import load_dotenv
+from openai import OpenAI
 
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")  # 환경 변수에서 API 키 가져오기
@@ -14,7 +15,7 @@ while True:
         break
 
     response = client.chat.completions.create(
-        model="gpt-4o",
+        model=os.getenv("DEFAULT_MODEL"),
         temperature=0.9,
         messages=[
             {"role": "system", "content": "너는 사용자를 도와주는 상담사야."},
