@@ -170,6 +170,10 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
+
+#OS
+.DS_Store
+
 # project
 #chap04/data/인격에 대한 칸트의 관점과 인공지능.pdf
 #chap04/data/hate_and_anger.txt
