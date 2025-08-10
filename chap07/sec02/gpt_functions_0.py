@@ -1,8 +1,10 @@
 from datetime import datetime
+
 import pytz
 import yfinance as yf
 
-def get_current_time(timezone: str = 'Asia/Seoul'):
+
+def get_current_time(timezone: str="Asia/Seoul"):
     tz = pytz.timezone(timezone) # 타임존 설정
     now = datetime.now(tz).strftime("%Y-%m-%d %H:%M:%S")
     now_timezone = f'{now} {timezone}'
@@ -14,7 +16,6 @@ def get_yf_stock_info(ticker: str):
     info = stock.info
     print(info)
     return str(info)
-
 
 
 tools = [
@@ -55,6 +56,6 @@ tools = [
 ]
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # get_current_time('America/New_York')
-    info = get_yf_stock_info('AAPL')    
+    info = get_yf_stock_info("AAPL")

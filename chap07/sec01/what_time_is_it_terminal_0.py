@@ -1,7 +1,9 @@
-from gpt_functions import get_current_time, tools 
-from openai import OpenAI
-from dotenv import load_dotenv
 import os
+
+from dotenv import load_dotenv
+from openai import OpenAI
+
+from gpt_functions import get_current_time, tools
 
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")  # 환경 변수에서 API 키 가져오기
@@ -10,7 +12,8 @@ client = OpenAI(api_key=api_key)  # 오픈AI 클라이언트의 인스턴스 생
 
 def get_ai_response(messages, tools=None):
     response = client.chat.completions.create(
-        model="gpt-4o",  # 응답 생성에 사용할 모델 지정
+        # model="gpt-4o",  # 응답 생성에 사용할 모델 지정
+        model=os.getenv("DEFAULT_MODEL"),
         messages=messages,  # 대화 기록을 입력으로 전달
         tools=tools,  # 사용 가능한 도구 목록 전달
     )

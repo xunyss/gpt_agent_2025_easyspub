@@ -1,7 +1,8 @@
-import os # ①
-import torch # ①
-import pandas as pd # ①
-from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline 
+import os  # ①
+
+import pandas as pd  # ①
+import torch  # ①
+from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
 
 os.environ["PATH"] += os.pathsep + r"C:\github\gpt_agent_2025_easyspub\ffmpeg-2025-02-10-full_build\bin" # 자신이 설치한 위치로 경로 수정
 

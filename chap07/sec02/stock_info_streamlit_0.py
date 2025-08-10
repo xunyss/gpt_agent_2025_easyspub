@@ -1,9 +1,11 @@
-from gpt_functions import get_current_time, tools, get_yf_stock_info
-from openai import OpenAI
-from dotenv import load_dotenv
-import os
 import json
+import os
+
 import streamlit as st
+from dotenv import load_dotenv
+from openai import OpenAI
+
+from gpt_functions import get_current_time, tools, get_yf_stock_info
 
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")  # 환경 변수에서 API 키 가져오기

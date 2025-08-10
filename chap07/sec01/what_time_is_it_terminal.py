@@ -1,8 +1,10 @@
-from gpt_functions import get_current_time, tools 
-from openai import OpenAI
-from dotenv import load_dotenv
-import os
 import json
+import os
+
+from dotenv import load_dotenv
+from openai import OpenAI
+
+from gpt_functions import get_current_time, tools
 
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")  # 환경 변수에서 API 키 가져오기
@@ -11,13 +13,12 @@ client = OpenAI(api_key=api_key)  # 오픈AI 클라이언트의 인스턴스 생
 
 def get_ai_response(messages, tools=None):
     response = client.chat.completions.create(
-        model="gpt-4o",  # 응답 생성에 사용할 모델 지정
+        # model="gpt-4o",  # 응답 생성에 사용할 모델 지정
+        model=os.getenv("DEFAULT_MODEL"),
         messages=messages,  # 대화 기록을 입력으로 전달
         tools=tools,  # 사용 가능한 도구 목록 전달
     )
     return response  # 생성된 응답 내용 반환
-
-
 
 messages = [
     {"role": "system", "content": "너는 사용자를 도와주는 상담사야."},  # 초기 시스템 메시지
@@ -42,12 +43,12 @@ while True:
             tool_call_id = tool_call.id         # tool_call 아이디 받기    
             arguments = json.loads(tool_call.function.arguments) # (1) 문자열을 딕셔너리로 변환    
             
-            if tool_name == "get_current_time":  # ⑤ 만약 tool_name이 "get_current_time"이라면
+            if tool_name == "get_current_time":  # ⑤ 만약 tool_name이 "get_current_time" 이라면
                 messages.append({
                     "role": "function",  # role을 "function"으로 설정
                     "tool_call_id": tool_call_id,
                     "name": tool_name,
-                    "content": get_current_time(timezone=arguments['timezone']),  # 타임존 추가
+                    "content": get_current_time(timezone=arguments["timezone"]),  # 타임존 추가
                 })
         messages.append({"role": "system", "content": "이제 주어진 결과를 바탕으로 답변할 차례다."})  # 함수 실행 완료 메시지 추가
         ai_response = get_ai_response(messages, tools=tools) # 다시 GPT 응답 받기

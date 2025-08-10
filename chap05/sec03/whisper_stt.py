@@ -1,8 +1,9 @@
 import os
-import torch
+
 import pandas as pd
-from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline 
-from pyannote.audio import Pipeline 
+import torch
+from pyannote.audio import Pipeline
+from transformers import AutoModelForSpeechSeq2Seq, AutoProcessor, pipeline
 
 os.environ["PATH"] += os.pathsep + r"C:\github\gpt_agent_2025_easyspub\ffmpeg-2025-02-10-full_build\bin" # 자신이 설치한 위치로 경로 수정
 
@@ -185,4 +186,3 @@ if __name__ == "__main__":
     )
 
     print(df_rttm)
-

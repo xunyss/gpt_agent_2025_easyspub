@@ -1,9 +1,11 @@
-from gpt_functions import get_current_time, tools, get_yf_stock_info, get_yf_stock_history, get_yf_stock_recommendations
-from openai import OpenAI
-from dotenv import load_dotenv
-import os
 import json
+import os
+
 import streamlit as st
+from dotenv import load_dotenv
+from openai import OpenAI
+
+from gpt_functions import get_current_time, tools, get_yf_stock_info, get_yf_stock_history, get_yf_stock_recommendations
 
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")  # 환경 변수에서 API 키 가져오기
@@ -12,13 +14,14 @@ client = OpenAI(api_key=api_key)  # 오픈AI 클라이언트의 인스턴스 생
 
 def get_ai_response(messages, tools=None):
     response = client.chat.completions.create(
-        model="gpt-4o",  # 응답 생성에 사용할 모델 지정
+        # model="gpt-4o",  # 응답 생성에 사용할 모델 지정
+        model=os.getenv("DEFAULT_MODEL"),
         messages=messages,  # 대화 기록을 입력으로 전달
         tools=tools,  # 사용 가능한 도구 목록 전달
     )
     return response  # 생성된 응답 내용 반환
 
-st.title("💬 Chatbot")   
+st.title("💬 Chatbot")
 
 if "messages" not in st.session_state:
     st.session_state["messages"] = [
@@ -42,8 +45,8 @@ if user_input := st.chat_input():    # 사용자 입력 받기
     if tool_calls:  # tool_calls가 있는 경우
         for tool_call in tool_calls:
             tool_name = tool_call.function.name # 실행해야한다고 판단한 함수명 받기
-            tool_call_id = tool_call.id         # tool_call 아이디 받기    
-            arguments = json.loads(tool_call.function.arguments) # 문자열을 딕셔너리로 변환    
+            tool_call_id = tool_call.id         # tool_call 아이디 받기
+            arguments = json.loads(tool_call.function.arguments) # 문자열을 딕셔너리로 변환
             
             if tool_name == "get_current_time":  
                 func_result = get_current_time(timezone=arguments['timezone'])
