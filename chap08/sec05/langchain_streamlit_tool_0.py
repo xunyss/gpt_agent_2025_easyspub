@@ -1,12 +1,18 @@
-import streamlit as st
-from langchain_openai import ChatOpenAI
-from langchain_core.messages import SystemMessage, HumanMessage, AIMessage, ToolMessage
+import os
 
+import streamlit as st
+from dotenv import load_dotenv
+from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
+from langchain_openai import ChatOpenAI
+
+load_dotenv()
 
 # 모델 초기화
-llm = ChatOpenAI(model="gpt-4o-mini")
+# llm = ChatOpenAI(model="gpt-4o-mini")
+llm = ChatOpenAI(model=os.getenv("DEFAULT_MODEL"))
 
 # 사용자의 메시지 처리하기 위한 함수
+# NOTE: generator
 def get_ai_response(messages):
     response = llm.stream(messages)
 

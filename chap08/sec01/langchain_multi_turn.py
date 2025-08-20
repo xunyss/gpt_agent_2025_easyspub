@@ -1,16 +1,17 @@
 # from openai import OpenAI  # 주석처리
 # from dotenv import load_dotenv
-# import os
+import os
+
+from dotenv import load_dotenv
+from langchain_core.messages import HumanMessage, SystemMessage, BaseMessage
 from langchain_openai import ChatOpenAI
-from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 
-
-# load_dotenv()
+load_dotenv()
 # api_key = os.getenv("OPENAI_API_KEY")  # 환경 변수에서 API 키 가져오기
 # client = OpenAI(api_key=api_key)  # 오픈AI 클라이언트의 인스턴스 생성
 
-llm = ChatOpenAI(model="gpt-4o")  # ChatOpenAI 클래스의 인스턴스 생성
-
+# llm = ChatOpenAI(model="gpt-4o")  # ChatOpenAI 클래스의 인스턴스 생성
+llm = ChatOpenAI(model=os.getenv("DEFAULT_MODEL"))
 
 # def get_ai_response(messages):
 #     response = client.chat.completions.create(
@@ -20,7 +21,8 @@ llm = ChatOpenAI(model="gpt-4o")  # ChatOpenAI 클래스의 인스턴스 생성
 #     )
 #     return response.choices[0].message.content  # 생성된 응답의 내용 반환
 
-messages = [
+messages: list[BaseMessage] = [
+# messages = [
     # {"role": "system", "content": "너는 사용자를 도와주는 상담사야."},  # 초기 시스템 메시지
     SystemMessage("너는 사용자를 도와주는 상담사야."),  # 초기 시스템 메시지
 ]

@@ -1,14 +1,18 @@
-import streamlit as st
-from langchain_openai import ChatOpenAI
-from langchain_core.messages import SystemMessage, HumanMessage, AIMessage, ToolMessage
-
-from langchain_core.tools import tool
+import os
 from datetime import datetime
-import pytz
 
+import pytz
+import streamlit as st
+from dotenv import load_dotenv
+from langchain_core.messages import SystemMessage, HumanMessage, AIMessage, ToolMessage
+from langchain_core.tools import tool
+from langchain_openai import ChatOpenAI
+
+load_dotenv()
 
 # 모델 초기화
-llm = ChatOpenAI(model="gpt-4o-mini")
+# llm = ChatOpenAI(model="gpt-4o-mini")
+llm = ChatOpenAI(model=os.getenv("DEFAULT_MODEL"))
 
 # 도구 함수 정의
 @tool
@@ -29,7 +33,6 @@ tool_dict = {"get_current_time": get_current_time}
 
 llm_with_tools = llm.bind_tools(tools)
 
-
 # 사용자의 메시지 처리하기 위한 함수
 def get_ai_response(messages):
     response = llm_with_tools.stream(messages) # ① llm.stream()을 llm_with_tools.stream()로 변경
@@ -42,19 +45,21 @@ def get_ai_response(messages):
             gathered = chunk
         else:
             gathered += chunk
- 
+
+    print(f"gathered >> {gathered}")
+
     if gathered.tool_calls:
         st.session_state.messages.append(gathered)
         
         for tool_call in gathered.tool_calls:
-            selected_tool = tool_dict[tool_call['name']]
+            selected_tool = tool_dict[tool_call["name"]]
             tool_msg = selected_tool.invoke(tool_call) 
             print(tool_msg, type(tool_msg))
             st.session_state.messages.append(tool_msg)
-           
+
+        # recursive call
         for chunk in get_ai_response(st.session_state.messages):
             yield chunk
-
 
 # Streamlit 앱
 st.title("💬 GPT-4o Langchain Chat")
@@ -62,7 +67,7 @@ st.title("💬 GPT-4o Langchain Chat")
 # 스트림릿 session_state에 메시지 저장
 if "messages" not in st.session_state:
     st.session_state["messages"] = [
-        SystemMessage("너는 사용자를 돕기 위해 최선을 다하는 인공지능 봇이다. "),  
+        SystemMessage("너는 사용자를 돕기 위해 최선을 다하는 인공지능 봇이다. "),
         AIMessage("How can I help you?")
     ]
 
@@ -85,6 +90,7 @@ if prompt := st.chat_input():
     st.session_state.messages.append(HumanMessage(prompt)) # 사용자 메시지 저장
 
     response = get_ai_response(st.session_state["messages"])
-    
+
+    # NOTE: write_stream 함수 - 내부적으로 메시지의 content 필드만 write 함
     result = st.chat_message("assistant").write_stream(response) # AI 메시지 출력
     st.session_state["messages"].append(AIMessage(result)) # AI 메시지 저장    

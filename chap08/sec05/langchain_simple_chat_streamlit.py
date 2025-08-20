@@ -1,10 +1,14 @@
+import os
+
 import streamlit as st
-
-from langchain_openai import ChatOpenAI  # 오픈AI 모델을 사용하는 랭체인 챗봇 클래스
+from dotenv import load_dotenv
 from langchain_core.chat_history import InMemoryChatMessageHistory  # 메모리에 대화 기록을 저장하는 클래스
-from langchain_core.runnables.history import RunnableWithMessageHistory  # 메시지 기록을 활용해 실행 가능한 wrapper 클래스
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
+from langchain_core.runnables import RunnableConfig
+from langchain_core.runnables.history import RunnableWithMessageHistory  # 메시지 기록을 활용해 실행 가능한 wrapper 클래스
+from langchain_openai import ChatOpenAI  # 오픈AI 모델을 사용하는 랭체인 챗봇 클래스
 
+load_dotenv()
 
 st.title("💬 Chatbot")
 
@@ -22,10 +26,11 @@ def get_session_history(session_id: str):
         st.session_state["store"][session_id] = InMemoryChatMessageHistory()
     return st.session_state["store"][session_id]
 
-llm = ChatOpenAI(model="gpt-4o-mini")
+# llm = ChatOpenAI(model="gpt-4o-mini")
+llm = ChatOpenAI(model=os.getenv("DEFAULT_MODEL"))
 with_message_history = RunnableWithMessageHistory(llm, get_session_history)
 
-config = {"configurable": {"session_id": "abc2"}}
+config: RunnableConfig = {"configurable": {"session_id": "abc2"}}
 
 # 스트림릿 화면에 메시지 출력
 for msg in st.session_state.messages:
@@ -51,10 +56,9 @@ if prompt := st.chat_input():
                 ai_response_bucket = r
             else:
                 ai_response_bucket += r
-            print(r.content, end='')
+            print(r.content, end="")
             st.markdown(ai_response_bucket.content)
 
     msg = ai_response_bucket.content
     st.session_state.messages.append(ai_response_bucket)
     print('assistant:', msg) 
-
